@@ -55,7 +55,7 @@ if __name__ == "__main__":
     main(
         model_name="mymodel", #args.model_name,
         service_name=args.service_name,
-        compute_config_file=None, #args.config_path,
+        compute_config_file="configuration/compute/DEV-realtimeinference-webservice-aci.yml", #args.config_path,
         environment_path="configuration/environments/environment_inference/", #args.env_path,
         aks_target_name=args.aks_target_name
     )
