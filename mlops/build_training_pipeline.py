@@ -10,10 +10,10 @@ from azureml.pipeline.steps import PythonScriptStep
 from azureml.core.runconfig import RunConfiguration
 
 from aml_utils import config, workspace, compute, pipeline
-
+from dotnetcore2 import runtime
 
 def main(dataset_name, model_name, pipeline_name, compute_name, environment_path, pipeline_version=None):
-
+    runtime.version = ("18", "10", "0")
     # Retrieve workspace
     ws = workspace.retrieve_workspace()
 
