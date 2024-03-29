@@ -1,0 +1,85 @@
+name: mlops-train-collab-model-test
+
+on:
+  workflow_dispatch:
+
+    push:
+      branches:
+      - main
+    pull_request:
+      branches:
+      - master
+      paths:
+        - 'mlops/**'
+
+#Special permissions required for OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+
+  train:
+    runs-on: ubuntu-latest
+    # runs-on: [self-hosted, dataanalyticsrunner]
+    environment: dev
+    steps:
+
+      #############
+      ##  Setup  ##
+      #############
+
+      - name: "[Setup] Azure login"
+        uses: azure/login@v1
+        with:
+          creds: '{
+            "clientId": "${{ secrets.ARM_CLIENT_ID_NON_PROD }}",
+            "clientSecret": "${{ secrets.ARM_CLIENT_SECRET_NON_PROD }}",
+            "subscriptionId": "d3d15f58-6f9f-436c-8796-24a2fd520d66",
+            "tenantId": "${{ secrets.ARM_TENANT_ID }}"
+            }'
+      - name: "[Setup] Set default AML workspace"
+        run: az configure --defaults workspace="${{ secrets.AML_WORKSPACE_NAME }}" group="${{ secrets.AML_RG_NAME }}"
+      - name: "[Setup] Checkout repo"
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install azureml-sdk==1.54.0
+          pip install PyYAML
+          pip install ruamel.yaml==0.18.5
+          pip install azureml-defaults
+          pip install azure-ai-ml
+          pip install azureml-pipeline
+          pip install azureml-pipeline-steps
+          pip install dotnetcore2==3.1.23
+          # pip install azureml-dataprep==5.1.0
+          # pip install azureml-dataprep-native
+
+
+      ################
+      ##  Training  ##
+      ################
+      - name: "Train"
+        run: |
+          python $GITHUB_WORKSPACE/mlops/deploy_model.py
+        env:
+          servicePrincipalId: "${{ secrets.ARM_CLIENT_ID_NON_PROD }}"
+          servicePrincipalKey: "${{ secrets.ARM_CLIENT_SECRET_NON_PROD }}"
+          tenantId: "${{ secrets.ARM_TENANT_ID }}"
+          AMLWORKSPACE: "amlpoc02"
+          RESOURCE_GROUP: "amlpoc02"
+          SUBSCRIPTION_ID: "d3d15f58-6f9f-436c-8796-24a2fd520d66"
+        # run: az ml job create --file $GITHUB_WORKSPACE/mlopsv1/mlops/build_training_pipeline.py
