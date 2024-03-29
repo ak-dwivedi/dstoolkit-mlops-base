@@ -41,9 +41,9 @@ def main(model_name, service_name, compute_config_file, environment_path, aks_ta
 
 def parse_args(args_list=None):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model-name', type=str, required=True)
-    parser.add_argument('--config-path', type=str, required=True)
-    parser.add_argument('--env-path', type=str, required=True)
+    parser.add_argument('--model-name', type=str, required=False)
+    parser.add_argument('--config-path', type=str, required=False)
+    parser.add_argument('--env-path', type=str, required=False)
     parser.add_argument('--service-name', type=str, default='webservice')
     parser.add_argument('--aks-target-name', type=str, default=None)
     return parser.parse_args(args_list)
