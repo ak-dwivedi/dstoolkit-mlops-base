@@ -30,7 +30,7 @@ def main(dataset_name, model_name, pipeline_name, compute_name, environment_path
     # Data connections setup
     datastore_name = os.getenv('DATASTORE_NAME')
     datastore = Datastore.get(ws, datastore_name) if datastore_name else ws.get_default_datastore()
-
+    dataset_name = "diabetec"
     raw_dataset = Dataset.get_by_name(ws, name=dataset_name)
     raw_dataset_as_input = raw_dataset.as_named_input(dataset_name)
 
