@@ -30,8 +30,8 @@ def main(datastore, data_path):
 
 def parse_args(args_list=None):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--datastore', type=str, required=True)
-    parser.add_argument('--path', type=str, required=True)
+    parser.add_argument('--datastore', type=str, required=False)
+    parser.add_argument('--path', type=str, required=False)
     args_parsed = parser.parse_args(args_list)
     return args_parsed
 
