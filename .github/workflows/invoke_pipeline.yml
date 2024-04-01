@@ -1,0 +1,59 @@
+name: Invoke AML Pipeline
+
+on:
+#   push:
+#     branches:
+#       - main
+  workflow_run:
+    workflows: [mlops-train-collab-model-test]
+    types:
+        - completed
+jobs:
+  get_pipeline_id:
+    name: Get AML Pipeline ID
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install Azure CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      - name: "[Setup] Azure login"
+        uses: azure/login@v1
+        with:
+            creds: '{
+                "clientId": "${{ secrets.ARM_CLIENT_ID_NON_PROD }}",
+                "clientSecret": "${{ secrets.ARM_CLIENT_SECRET_NON_PROD }}",
+                "subscriptionId": "d3d15f58-6f9f-436c-8796-24a2fd520d66",
+                "tenantId": "${{ secrets.ARM_TENANT_ID }}"
+                }'
+      - name: "[Setup] Set default AML workspace"
+        run: az configure --defaults workspace="${{ secrets.AML_WORKSPACE_NAME }}" group="${{ secrets.AML_RG_NAME }}"
+      - name: Get AML Pipeline ID
+        run: |
+          # Install ML extension
+          az extension add -n azure-cli-ml
+          az extension list
+          # Get pipeline ID
+          workspace_params="--workspace-name ${{ secrets.AML_WORKSPACE_NAME }} --resource-group ${{ secrets.AML_WORKSPACE_NAME }}"
+          pipeline_id=$(az ml pipeline list $workspace_params --query "[?Name == '${{ secrets.AML_PIPELINE_NAME }}'].Id" -o tsv)
+          if [ -n "$pipeline_id" ]; then
+            echo "Found pipeline '${{ secrets.AML_PIPELINE_NAME }}' with ID: $pipeline_id"
+            echo "::set-output name=pipeline_id::$pipeline_id"
+          else
+            echo "Pipeline '${{ secrets.AML_PIPELINE_NAME }}' not found in workspace"
+            exit 1
+          fi
+        id: get_pipeline_id
+
+  invoke_pipeline:
+    name: Invoke AML Pipeline
+    runs-on: ubuntu-latest
+    needs: get_pipeline_id
+    steps:
+      - name: Invoke AML Pipeline
+        uses: ms-air-aiagility/vss-services-azureml@v1
+        with:
+          pipeline_id: ${{ needs.get_pipeline_id.outputs.pipeline_id }}
