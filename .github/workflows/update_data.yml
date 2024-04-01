@@ -57,6 +57,7 @@ jobs:
             pip install azureml-pipeline-steps
             pip install dotnetcore2==3.1.23
             pip install joblib
+            pip install pandas
             # pip install azureml-dataprep==5.1.0
             # pip install azureml-dataprep-native
   
