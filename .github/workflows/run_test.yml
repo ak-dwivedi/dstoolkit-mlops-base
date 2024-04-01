@@ -41,11 +41,11 @@ jobs:
       run: flake8 --output-file=flake8-testresults.xml --format junit-xml --exit-zero
     - name: Run code quality tests (Pylint)
       run: pylint src/ --output-format=pylint_junit.JUnitReporter --exit-zero > pylint-testresults.xml
-    - name: Run all unit tests
-      run: |
-        # if [ ${{ env.ls mlops/tests/ | grep -e "^test_.*.py" | head -n 1 }} ]; then
-        pytest -v mlops/tests/ --doctest-modules --junitxml=unit-testresults.xml --cov=src --cov-append --cov-report=xml:coverage.xml --cov-report=html:htmlcov
-        # fi
+    # - name: Run all unit tests
+    #   run: |
+    #     # if [ ${{ env.ls mlops/tests/ | grep -e "^test_.*.py" | head -n 1 }} ]; then
+    #     pytest -v mlops/tests/ --doctest-modules --junitxml=unit-testresults.xml --cov=src --cov-append --cov-report=xml:coverage.xml --cov-report=html:htmlcov
+    #     # fi
     
     # - name: Lint with flake8
     #   run: |
@@ -53,9 +53,9 @@ jobs:
     #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    # - name: Test with pytest
-    #   run: |
-    #     pytest
+    - name: Test with pytest
+      run: |
+        pytest
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
