@@ -8,3 +8,7 @@ pandas
 azureml-core==1.53.0
 azureml-opendatasets==1.53.0
 pyyaml
+azureml-defaults
+azure-ai-ml
+azureml-pipeline
+azureml-pipeline-steps
