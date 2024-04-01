@@ -43,9 +43,9 @@ jobs:
       run: pylint src/ --output-format=pylint_junit.JUnitReporter --exit-zero > pylint-testresults.xml
     - name: Run all unit tests
       run: |
-        if [ ${{ env.ls mlops/tests/ | grep -e "^test_.*.py" | head -n 1 }} ]; then
-          pytest -v mlops/tests/ --doctest-modules --junitxml=unit-testresults.xml --cov=src --cov-append --cov-report=xml:coverage.xml --cov-report=html:htmlcov
-        fi
+        # if [ ${{ env.ls mlops/tests/ | grep -e "^test_.*.py" | head -n 1 }} ]; then
+        pytest -v mlops/tests/ --doctest-modules --junitxml=unit-testresults.xml --cov=src --cov-append --cov-report=xml:coverage.xml --cov-report=html:htmlcov
+        # fi
     
     # - name: Lint with flake8
     #   run: |
