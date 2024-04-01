@@ -3,9 +3,9 @@ name: mlops-train-collab-model-test
 on:
   workflow_dispatch:
 
-    push:
-      branches:
-      - main
+    # push:
+    #   branches:
+    #   - main
     pull_request:
       branches:
       - master
@@ -13,6 +13,8 @@ on:
         - 'mlops/**'
   workflow_run:
     workflows: [run_unit_test]
+    types:
+      - completed
 #Special permissions required for OIDC authentication
 permissions:
   id-token: write
