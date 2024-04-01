@@ -11,7 +11,8 @@ on:
       - master
       paths:
         - 'mlops/**'
-
+  workflow_run:
+    workflows: [run_unit_test]
 #Special permissions required for OIDC authentication
 permissions:
   id-token: write
