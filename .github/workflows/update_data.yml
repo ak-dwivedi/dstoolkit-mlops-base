@@ -81,18 +81,18 @@ jobs:
             AZURE_CORE_LOGGING_ENABLE_AZURE_TELEMETRY: "false"
         
         
-        - name: "Train"
-          run: |
-            python $GITHUB_WORKSPACE/src/snapshot_data.py
-          env:
-            servicePrincipalId: "${{ secrets.ARM_CLIENT_ID_NON_PROD }}"
-            servicePrincipalKey: "${{ secrets.ARM_CLIENT_SECRET_NON_PROD }}"
-            tenantId: "${{ secrets.ARM_TENANT_ID }}"
-            AMLWORKSPACE: "amlpoc02"
-            RESOURCE_GROUP: "amlpoc02"
-            SUBSCRIPTION_ID: "d3d15f58-6f9f-436c-8796-24a2fd520d66"
-            datastore: workspaceblobstore 
-            path: mydataset
+        # - name: "Train"
+        #   run: |
+        #     python $GITHUB_WORKSPACE/src/snapshot_data.py
+        #   env:
+        #     servicePrincipalId: "${{ secrets.ARM_CLIENT_ID_NON_PROD }}"
+        #     servicePrincipalKey: "${{ secrets.ARM_CLIENT_SECRET_NON_PROD }}"
+        #     tenantId: "${{ secrets.ARM_TENANT_ID }}"
+        #     AMLWORKSPACE: "amlpoc02"
+        #     RESOURCE_GROUP: "amlpoc02"
+        #     SUBSCRIPTION_ID: "d3d15f58-6f9f-436c-8796-24a2fd520d66"
+        #     datastore: workspaceblobstore 
+        #     path: mydataset
 
         - name: "Register Data"
           run: |
