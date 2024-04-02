@@ -91,8 +91,8 @@ jobs:
             AMLWORKSPACE: "amlpoc02"
             RESOURCE_GROUP: "amlpoc02"
             SUBSCRIPTION_ID: "d3d15f58-6f9f-436c-8796-24a2fd520d66"
-            datastore: $datastore 
-            path: $target_path
+            datastore: workspaceblobstore 
+            path: mydataset
 
         - name: "Register Data"
           run: |
