@@ -96,7 +96,7 @@ jobs:
 
         - name: "Register Data"
           run: |
-            python $GITHUB_WORKSPACE/mlops/register_dataset.py.py
+            python $GITHUB_WORKSPACE/mlops/register_dataset.py
           env:
             servicePrincipalId: "${{ secrets.ARM_CLIENT_ID_NON_PROD }}"
             servicePrincipalKey: "${{ secrets.ARM_CLIENT_SECRET_NON_PROD }}"
